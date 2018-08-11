@@ -1,0 +1,9 @@
+{
+    // GIT diffs should be concise
+    "files.trimTrailingWhitespace": true,
+
+    // Settings of the ymotongpoo.licenser plugin
+    // Installation: "ext install licenser" in the console
+    "licenser.author": "Radomír Černoch (radomir.cernoch@gmail.com)",
+    "licenser.license": "MIT"
+}
