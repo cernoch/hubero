@@ -3,14 +3,14 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-#include <boolSATlib/core.hpp>
+#include <hubero/core.hpp>
 
 #include <cstdint>
 #include <iostream>
 #include <utility>
 
-using namespace boolSAT;
-using namespace boolSAT::mini;
+using namespace hubero;
+using namespace hubero::mini;
 
 int main(int, char**)
 {
@@ -23,7 +23,7 @@ int main(int, char**)
 
         LitT<uint16_t> l(w, true);
         std::cout << static_cast<uint16_t>(l) << std::endl;
-        LitT<uint8_t> k(l);
+        static_cast<void>(LitT<uint8_t>(l));
 
     } catch (std::out_of_range& oor) {
         std::cout << oor.what() << std::endl;

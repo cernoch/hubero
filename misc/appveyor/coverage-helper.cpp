@@ -51,9 +51,9 @@ std::string mks_path(std::string path) {
         simple_to_lower
     );
 
-    auto start = lower_case.find("boolsatlib");
+    auto start = lower_case.find("src.hubero");
     if (start == std::string::npos) {
-        throw std::domain_error("Couldn't find boolSATlib's base path");
+        throw std::domain_error("Couldn't find hubero's base path");
     }
     auto end = path.find_first_of("\\/", start);
     std::cerr << "Debug: " << path.substr(0, end) << std::endl;

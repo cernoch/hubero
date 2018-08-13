@@ -3,8 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-#include <boolSATlib/core.hpp>
-using namespace boolSAT;
+#include <hubero/core.hpp>
+using namespace hubero;
 
 #include "catch.hpp"
 
@@ -40,18 +40,18 @@ TEST_CASE("Var::Var+static_cast<integral>")
     {
         REQUIRE_THROWS_AS(VarT<uint8_t>(-1),  std::out_of_range);
         REQUIRE(static_cast<uint8_t>(VarT<uint8_t>(0)) == 0);
-        REQUIRE(static_cast<uint8_t>(VarT<uint8_t>(255)) == 255);
-        REQUIRE_THROWS_AS(VarT<uint8_t>(256), std::out_of_range);
+        REQUIRE(static_cast<uint8_t>(VarT<uint8_t>(127)) == 127);
+        REQUIRE_THROWS_AS(VarT<uint8_t>(128), std::out_of_range);
     }
     SECTION("type-modyfing constructor checks the bounds")
     {
         auto v0 = VarT<uint32_t>();
-        auto v255 = VarT<uint32_t>(255);
-        auto v256 = VarT<uint32_t>(256);
+        auto v127 = VarT<uint32_t>(127);
+        auto v128 = VarT<uint32_t>(128);
 
         REQUIRE(static_cast<uint8_t>(VarT<uint8_t>(v0)) == 0);
-        REQUIRE(static_cast<uint8_t>(VarT<uint8_t>(v255)) == 255);
-        REQUIRE_THROWS_AS(VarT<uint8_t>(v256), std::out_of_range);
+        REQUIRE(static_cast<uint8_t>(VarT<uint8_t>(v127)) == 127);
+        REQUIRE_THROWS_AS(VarT<uint8_t>(v128), std::out_of_range);
     }
 }
 
@@ -231,19 +231,29 @@ TEST_CASE("Var::operator-=")
     REQUIRE(v1 == Var(4));
 }
 
+
+
+TEST_CASE("Var::static_cast<integral>")
+{
+    auto v = VarT<uint16_t>(300);
+    REQUIRE(static_cast<uint32_t>(v) == 300u); // cast
+    REQUIRE(static_cast<uint16_t>(v) == 300u); // no casting
+    REQUIRE_THROWS_AS(static_cast<VarT<uint8_t>>(v), std::out_of_range); // cast
+}
+
 TEST_CASE("Var::static_cast<Var>")
 {
     auto v0_32 = VarT<uint32_t>();
-    auto v255_32 = VarT<uint32_t>(255u);
-    auto v256_32 = VarT<uint32_t>(256u);
+    auto v127_32 = VarT<uint32_t>(127u);
+    auto v128_32 = VarT<uint32_t>(128u);
 
     auto v0_8 = static_cast<VarT<uint8_t>>(v0_32);
     REQUIRE(static_cast<uint8_t>(v0_8) == 0u);
 
-    auto v255_8 = static_cast<VarT<uint8_t>>(v255_32);
-    REQUIRE(static_cast<uint8_t>(v255_8) == 255u);
+    auto v127_8 = static_cast<VarT<uint8_t>>(v127_32);
+    REQUIRE(static_cast<uint8_t>(v127_8) == 127u);
 
-    REQUIRE_THROWS_AS(static_cast<VarT<uint8_t>>(v256_32), std::out_of_range);
+    REQUIRE_THROWS_AS(static_cast<VarT<uint8_t>>(v128_32), std::out_of_range);
 }
 
 

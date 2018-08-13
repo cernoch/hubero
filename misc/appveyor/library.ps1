@@ -93,8 +93,5 @@ function MergeCoverage {
   Invoke-Expression-Safely "$command"
 
   # Workaround https://github.com/OpenCppCoverage/OpenCppCoverage/issues/46
-  (Get-Content cobertura.xml) -replace ' filename="projects\\bool[sS][aA][tT]lib[-a-z]*\\', ' filename="' | Set-Content cobertura.xml
-
-  # Workaround https://github.com/OpenCppCoverage/OpenCppCoverage/issues/53
-  (Get-Content cobertura.xml) -replace ' filename="bool[sS][aA][tT]lib\\', ' filename="boolSATlib\' | Set-Content cobertura.xml
+  (Get-Content cobertura.xml) -replace ' filename="projects\\hubero[-a-z]*\\', ' filename="' | Set-Content cobertura.xml
 }

@@ -3,9 +3,9 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-#include <boolSATlib/core.hpp>
-using namespace boolSAT;
-using namespace boolSAT::mini;
+#include <hubero/core.hpp>
+using namespace hubero;
+using namespace hubero::mini;
 
 #include "catch.hpp"
 
@@ -47,7 +47,7 @@ TEST_CASE("mini::Lit::Lit+static_cast<integral>")
     {
         Lit l1(11);
         Lit l2(l1);
-        REQUIRE(static_cast<unsigned>(l1) == 11);
+        REQUIRE(static_cast<unsigned>(l2) == 11);
     }
     SECTION("move-constructor")
     {
@@ -64,9 +64,9 @@ TEST_CASE("mini::Lit::Lit+static_cast<integral>")
     SECTION("direct-init casting constructor checks bounds")
     {
         REQUIRE_THROWS_AS(LitT<uint8_t>(-1),  std::out_of_range);
-        REQUIRE(static_cast<uint8_t>(LitT<uint8_t>(0u)) == 0u);
-        REQUIRE(static_cast<uint8_t>(LitT<uint8_t>(255u)) == 255u);
-        REQUIRE_THROWS_AS(LitT<uint8_t>(256u), std::out_of_range);
+        REQUIRE(static_cast<uint8_t>(LitT<uint8_t>(0)) == 0);
+        REQUIRE(static_cast<uint8_t>(LitT<uint8_t>(255)) == 255);
+        REQUIRE_THROWS_AS(LitT<uint8_t>(256), std::out_of_range);
     }
     SECTION("type-modyfing constructor checks the bounds")
     {
@@ -80,7 +80,7 @@ TEST_CASE("mini::Lit::Lit+static_cast<integral>")
     }
 }
 
-TEST_CASE("Lit::operator=")
+TEST_CASE("mini::Lit::operator=")
 {
     SECTION("same type")
     {
@@ -120,7 +120,7 @@ TEST_CASE("Lit::operator=")
 
 
 
-TEST_CASE("Lit::operator==")
+TEST_CASE("mini::Lit::operator==")
 {
     const auto l0 = Lit();
     const auto l1 = Lit(1);
@@ -135,7 +135,7 @@ TEST_CASE("Lit::operator==")
     }
 }
 
-TEST_CASE("Lit::operator!=")
+TEST_CASE("mini::Lit::operator!=")
 {
     const auto l0 = Lit();
     const auto l1 = Lit(1);
@@ -152,7 +152,7 @@ TEST_CASE("Lit::operator!=")
 
 
 
-TEST_CASE("Lit::comparators")
+TEST_CASE("mini::Lit::comparators")
 {
     const auto l07 = Lit(7);
     const auto l11 = Lit(11);
@@ -188,13 +188,13 @@ TEST_CASE("Lit::comparators")
 
 
 
-TEST_CASE("Lit::operator+") {
+TEST_CASE("mini::Lit::operator+") {
     const Lit l1(21);
     const Lit l2(23);
     REQUIRE(l1 + l2 == Lit(44));
 }
 
-TEST_CASE("Lit::operator-") {
+TEST_CASE("mini::Lit::operator-") {
     const Lit l1(21);
     const Lit l2(23);
     REQUIRE(l2 - l1 == Lit(2));
@@ -202,7 +202,7 @@ TEST_CASE("Lit::operator-") {
 
 
 
-TEST_CASE("Lit::operator++")
+TEST_CASE("mini::Lit::operator++")
 {
     SECTION("pre-increment")
     {
@@ -220,7 +220,7 @@ TEST_CASE("Lit::operator++")
     }
 }
 
-TEST_CASE("Lit::operator--")
+TEST_CASE("mini::Lit::operator--")
 {
     SECTION("pre-decrement")
     {
@@ -240,7 +240,7 @@ TEST_CASE("Lit::operator--")
 
 
 
-TEST_CASE("Lit::operator+=")
+TEST_CASE("mini::Lit::operator+=")
 {
     Lit l1(43);
     const Lit l2(47);
@@ -248,7 +248,7 @@ TEST_CASE("Lit::operator+=")
     REQUIRE(l1 == Lit(90));
 }
 
-TEST_CASE("Lit::operator-=")
+TEST_CASE("mini::Lit::operator-=")
 {
     Lit l1(41);
     const Lit l2(37);
@@ -258,24 +258,32 @@ TEST_CASE("Lit::operator-=")
 
 
 
-TEST_CASE("Lit::static_cast<Lit>")
+TEST_CASE("mini::Lit::static_cast<integral>")
+{
+    auto v = LitT<uint16_t>(300);
+    REQUIRE(static_cast<uint32_t>(v) == 300u); // cast
+    REQUIRE(static_cast<uint16_t>(v) == 300u); // no casting
+    REQUIRE_THROWS_AS(static_cast<uint8_t>(v), std::out_of_range); // cast
+}
+
+TEST_CASE("mini::Lit::static_cast<Lit>")
 {
     auto l0_32 = LitT<uint32_t>();
-    auto l127_32 = LitT<uint32_t>(Var(127u), false);
-    auto l128_32 = LitT<uint32_t>(Var(128u), false);
+    auto l255_32 = LitT<uint32_t>(255u);
+    auto l256_32 = LitT<uint32_t>(256u);
 
     auto l0_8 = static_cast<LitT<uint8_t>>(l0_32);
     REQUIRE(static_cast<LitT<uint8_t>>(l0_8) == LitT<uint8_t>(Var(0u), false));
 
-    auto l127_8 = static_cast<LitT<uint8_t>>(l127_32);
-    REQUIRE(static_cast<LitT<uint8_t>>(l127_8) == LitT<uint8_t>(Var(127u), false));
+    auto l255_8 = static_cast<LitT<uint8_t>>(l255_32);
+    REQUIRE(static_cast<uint8_t>(l255_8) == 255u);
 
-    REQUIRE_THROWS_AS(static_cast<LitT<uint8_t>>(l128_32), std::out_of_range);
+    REQUIRE_THROWS_AS(static_cast<LitT<uint8_t>>(l256_32), std::out_of_range);
 }
 
 
 
-TEST_CASE("Lit::to_string")
+TEST_CASE("mini::Lit::to_string")
 {
     REQUIRE(Lit(Var(0), true).to_string() == "0");
     REQUIRE(Lit(Var(0), false).to_string() == "-0");

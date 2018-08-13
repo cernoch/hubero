@@ -5,8 +5,8 @@
 
 #include "catch.hpp"
 
-#include <boolSATlib/tools.hpp>
-using namespace boolSAT::tools;
+#include <hubero/tools.hpp>
+using namespace hubero::tools;
 
 TEST_CASE("type_to_string::primitive_types")
 {

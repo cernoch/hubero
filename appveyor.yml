@@ -25,7 +25,7 @@ before_build:
   - ps: . .\misc\appveyor\library.ps1; AppVeyorConfigure
 
 build:
-  project: build\main\boolSATlib.sln
+  project: build\main\hubero.sln
   parallel: true
   verbosity: minimal
 
@@ -34,4 +34,11 @@ test_script:
   - ps: . .\misc\appveyor\library.ps1; AppVeyorTests
 
 environment:
-  APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  matrix:
+    - additional_flags: "/std:c++11"
+    - additional_flags: "/std:c++17"
+
+matrix:
+  exclude:
+    - additional_flags: "/std:c++17"
+      platform: Win32

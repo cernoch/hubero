@@ -3,8 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-#ifndef BOOLSATLIB_TOOLS_H_
-#define BOOLSATLIB_TOOLS_H_
+#ifndef HUBERO_TOOLS_H_
+#define HUBERO_TOOLS_H_
 
 #include <stdexcept>
 #include <string>
@@ -19,7 +19,7 @@
 #include <sstream>
 #endif
 
-namespace boolSAT {
+namespace hubero {
 namespace tools {
 
     template<class type>
@@ -56,7 +56,7 @@ namespace tools {
         std::stringstream type_name_stream;
         type_name_stream << typeid(type).name();
         auto type_name_str = type_name_stream.str();
-        
+
         // Try removing "class " from the beginning
         if (type_name_str.size() > 6 &&
             type_name_str.substr(0, 6) == "class ") {
@@ -67,5 +67,5 @@ namespace tools {
 #endif
     } // type_to_string
 } // tools
-} // boolSAT
-#endif // BOOLSATLIB_TOOLS_H_
+} // hubero
+#endif // HUBERO_TOOLS_H_
