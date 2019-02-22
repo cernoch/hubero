@@ -42,8 +42,8 @@ char simple_to_lower(char ch) {
 }
 
 std::string mks_path(std::string path) {
-
-    auto lower_case = path;
+    return path;
+    /*auto lower_case = path;
     std::transform(
         lower_case.begin(),
         lower_case.end(),
@@ -57,7 +57,7 @@ std::string mks_path(std::string path) {
     }
     auto end = path.find_first_of("\\/", start);
     std::cerr << "Debug: " << path.substr(0, end) << std::endl;
-    return path.substr(0, end);
+    return path.substr(0, end);*/
 }
 
 std::string windowsify_path(std::string path) {
